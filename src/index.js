@@ -1,5 +1,17 @@
-fetch(
-  'https://pixabay.com/api/?key=32253350-233c165c5f822b5f85a9694b5&q=yellow+flowers&image_type=photo'
-).then(resp => {
-  console.log(resp.json());
-});
+import fetchImages from './js/fetch';
+import Notiflix from 'notiflix';
+import simpleLightbox from 'simplelightbox';
+
+const formEl = document.querySelector('.search-form');
+const inputEl = document.querySelector('input');
+const btnEl = document.querySelector('button');
+
+formEl.addEventListener('submit', onFormSubmit);
+
+function onFormSubmit(e) {
+  e.preventDefault();
+
+  const inputValue = e.target.value;
+
+  fetchImages(inputValue);
+}
