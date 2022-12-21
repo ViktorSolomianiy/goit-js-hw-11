@@ -1,17 +1,25 @@
 .search-form {
   display: flex;
-  gap: 15px;
+  gap: 5px;
   justify-content: center;
+  background-color: rgb(253, 81, 81);
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 input {
+  font-weight: 600;
+  padding-left: 10px;
   border-radius: 8px;
   width: 250px;
   height: 40px;
-  outline: 0;
-  border: 2px solid tomato;
+  outline: none;
+  border: 0;
 }
 
 button {
   border-radius: 8px;
+  outline: none;
+  border: 0;
+  width: 70px;
 }
