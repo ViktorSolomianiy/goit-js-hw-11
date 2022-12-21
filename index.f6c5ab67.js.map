@@ -1,1 +1,0 @@
-{"mappings":"AAAAA,MACE,qGACAC,MAAKC,IACLC,QAAQC,IAAIF,EAAKG,OAAO","sources":["src/index.js"],"sourcesContent":["fetch(\n  'https://pixabay.com/api/?key=32253350-233c165c5f822b5f85a9694b5&q=yellow+flowers&image_type=photo'\n).then(resp => {\n  console.log(resp.json());\n});\n"],"names":["fetch","then","resp","console","log","json"],"version":3,"file":"index.f6c5ab67.js.map"}
