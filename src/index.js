@@ -1,27 +1,75 @@
+import PicturesAPI from './js/fetch';
 import fetchImages from './js/fetch';
 import Notiflix from 'notiflix';
 import simpleLightbox from 'simplelightbox';
 
 const formEl = document.querySelector('.search-form');
 const inputEl = document.querySelector('input');
-const btnEl = document.querySelector('button');
 const gallery = document.querySelector('.gallery');
+const loadMore = document.querySelector('.load-more');
+
+const picturesAPI = new PicturesAPI();
 
 formEl.addEventListener('submit', onFormSubmit);
+loadMore.addEventListener('click', loadMoreBtn);
+
+let totalCount = 0;
 
 function onFormSubmit(e) {
   e.preventDefault();
+  totalCount = 0;
 
-  const inputValue = inputEl.value.trim();
+  gallery.innerHTML = '';
+  picturesAPI.query = inputEl.value.trim();
+  picturesAPI.resetPage();
+  picturesAPI.hideLoadMoreBtn();
 
-  fetchImages(inputValue)
-    .then(createPhotoList)
-    .catch(err => console.log(err));
+  if (picturesAPI.query === '') {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+
+    return;
+  }
+
+  fetchPhotosAndCreatePage();
+}
+
+function loadMoreBtn() {
+  picturesAPI.query = inputEl.value.trim();
+  picturesAPI.incrementPage();
+
+  fetchPhotosAndCreatePage();
 }
 
 function createPhotoList(photos) {
   const photosArray = photos.hits;
+  const totalHits = photos.totalHits;
 
+  totalCount += photosArray.length;
+
+  if (photosArray.length === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+  }
+
+  if (totalHits !== 0 && totalCount >= totalHits) {
+    Notiflix.Notify.warning(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
+
+  if (totalCount < totalHits) {
+    picturesAPI.showLoadMoreBtn();
+  } else {
+    picturesAPI.hideLoadMoreBtn();
+  }
+
+  createPhotosList(photosArray);
+}
+
+function createPhotosList(photosArray) {
   const markupPhotoList = photosArray
     .map(
       photo =>
@@ -48,6 +96,14 @@ function createPhotoList(photos) {
     )
     .join('');
 
-  gallery.innerHTML = markupPhotoList;
-  // console.log(markupPhotoList);
+  gallery.insertAdjacentHTML('beforeend', markupPhotoList);
+}
+
+async function fetchPhotosAndCreatePage() {
+  try {
+    const photoList = await picturesAPI.fetchImages();
+    createPhotoList(photoList);
+  } catch (error) {
+    console.log(error);
+  }
 }

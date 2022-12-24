@@ -17,13 +17,18 @@ button {
 }
 
 img {
+  display: block;
   width: 400px;
-  height: 250px;
+  height: 270px;
   border-radius: 5px 5px 0px 0px;
 }
 
 b {
   margin-bottom: 5px;
+}
+
+.is-hidden {
+  visibility: hidden;
 }
 
 .photo-link {
@@ -72,4 +77,16 @@ b {
   margin-right: 10px;
   border-radius: 5px;
   box-shadow: 6px 6px 10px -3px rgba(0, 0, 0, 0.75);
+}
+
+.load-more {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  width: 150px;
+  height: 40px;
+  background-color: rgb(253, 81, 81);
+  color: white;
 }
