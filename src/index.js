@@ -25,27 +25,28 @@ function createPhotoList(photos) {
   const markupPhotoList = photosArray
     .map(
       photo =>
-        `
+        `<a href="${photo.largeImageURL}" class="photo-link">
           <div class="photo-card">
            <img src="${photo.webformatURL}" alt="${photo.tags}" loading="lazy"/>
-           <div class="info">
+            <div class="info">
                <p class="info-item">
-                <b>Likes</b><br />${photo.likes}
+                <b>Likes</b>${photo.likes}
               </p>
               <p class="info-item">
-                <b>Views</b><br />${photo.views}
+                <b>Views</b>${photo.views}
               </p>
               <p class="info-item">
-                <b>Comments</b><br />${photo.comments}
+                <b>Comments</b>${photo.comments}
               </p>
               <p class="info-item">
-                <b>Downloads</b><br />${photo.downloads}
+                <b>Downloads</b>${photo.downloads}
               </p>
            </div>
           </div>
+         </a>
          `
     )
-    .join();
+    .join('');
 
   gallery.innerHTML = markupPhotoList;
   // console.log(markupPhotoList);
