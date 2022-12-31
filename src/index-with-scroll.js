@@ -7,12 +7,31 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formEl = document.querySelector('.search-form');
 const inputEl = document.querySelector('input');
 const gallery = document.querySelector('.gallery');
-const loadMore = document.querySelector('.load-more');
 
 const picturesAPI = new PicturesAPI();
 
+window.addEventListener('scroll', async infinityScroll => {
+  const body = document.body,
+    html = document.documentElement;
+
+  const totalHeight = Math.max(
+    body.scrollHeight,
+    body.offsetHeight,
+    html.clientHeight,
+    html.scrollHeight,
+    html.offsetHeight
+  );
+
+  const pixelsToBottom = totalHeight - window.innerHeight - window.scrollY;
+  console.log(pixelsToBottom);
+
+  if (pixelsToBottom < 500) {
+    picturesAPI.incrementPage();
+
+    const articles = await fetchPhotosAndCreatePage();
+  }
+});
 formEl.addEventListener('submit', onFormSubmit);
-loadMore.addEventListener('click', loadMoreBtn);
 
 const lightBox = new SimpleLightbox('.photo-link', {
   captionsData: 'alt',
@@ -36,7 +55,6 @@ function onFormSubmit(e) {
   gallery.innerHTML = '';
   picturesAPI.query = inputEl.value.trim();
   picturesAPI.resetPage();
-  picturesAPI.hideLoadMoreBtn();
 
   if (picturesAPI.query === '') {
     Notiflix.Notify.failure(
@@ -45,13 +63,6 @@ function onFormSubmit(e) {
 
     return;
   }
-
-  fetchPhotosAndCreatePage();
-}
-
-function loadMoreBtn() {
-  picturesAPI.query = inputEl.value.trim();
-  picturesAPI.incrementPage();
 
   fetchPhotosAndCreatePage();
 }
@@ -76,12 +87,6 @@ function createPhotoList(photos) {
 
   if (totalHits !== 0) {
     Notiflix.Notify.success(`Hooray! We found ${photosArray.length} images.`);
-  }
-
-  if (totalCount < totalHits) {
-    picturesAPI.showLoadMoreBtn();
-  } else {
-    picturesAPI.hideLoadMoreBtn();
   }
 
   createPhotosList(photosArray);

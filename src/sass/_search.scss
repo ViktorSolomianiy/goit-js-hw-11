@@ -35,12 +35,6 @@ b {
   text-decoration: none;
   color: black;
   outline: none;
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.photo-link:hover,
-.photo-link:focus {
-  transform: scale(1.02);
 }
 
 .search-form {
@@ -77,6 +71,12 @@ b {
   margin-right: 10px;
   border-radius: 5px;
   box-shadow: 6px 6px 10px -3px rgba(0, 0, 0, 0.75);
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.photo-card:hover,
+.photo-card:focus {
+  transform: scale(1.02);
 }
 
 .load-more {
